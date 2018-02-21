@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/redux@latest/dist/redux.js" charset="utf-8"></script>
+  <title>Redux basics</title>
+</head>
+<body>
+
+  <form action="" id="inputColorForm" name="inputColorForm" method="post">
+    <input id="add-color" type="text" name="color" placeholder="enter a colour">
+    <p id="buttons">
+      <input class="btn" type="submit" name="add" value="Add">
+      <input class="btn" type="submit" name="remove" value="Remove">
+    </p>
+  </form>
+
+  <p id="result"></p>
+
+  <script type="text/javascript">
+
+  // Some refs:
+      // - Introduction to Redux; Kirupa Chinnathambi; https://www.youtube.com/watch?v=ky4CzcSt2tQ&t=3s
+      // - https://egghead.io/lessons/react-redux-store-methods-getstate-dispatch-and-subscribe
+
+  // Some pointers:
+    // - an action is an object that must have a "type" property and some other properties.
+    // - Redux.createStore takes a reducer.
+
+    const buttons = document.querySelector('#buttons')
+    buttons.addEventListener('click', function(e){
+      e.preventDefault()
+      const i = document.querySelector('#add-color')
+      switch (e.target.name) {
+        case "add":
+          // store.dispatch(actionObject)
+          store.dispatch({type: "ADD", color: String(i.value)})
+          console.log(store.getState())
+          break;
+        case "remove":
+          store.dispatch({type: "REMOVE", color: String(i.value)})
+          console.log(store.getState())
+          break;
+        default:
+          console.log("NoOp")
+      }
+      // console.log(`You entered a value`, colorForm.elements[0].value)
+    })
+
+
+    // reducers
+
+    function favouriteColor(state, action) {
+      if (!state) {
+        return new Set([])
+      } else {
+        console.log(action.type)
+        switch (action.type) {
+          case "ADD":
+            return state.add(action.color)
+            break;
+          case "REMOVE":
+            return new Set(Array.from(state).filter(item => item !== action.color))
+            break;
+          default:
+            return state
+        }
+      }
+    }
+
+    let store = Redux.createStore(favouriteColor)
+
+    // store.subscribe => run a function when the store updates.
+    store.subscribe(() => {
+      document.querySelector('#result').innerText = Array.from(store.getState()).join(', ')
+    })
+
+  </script>
+</body>
+</html>
