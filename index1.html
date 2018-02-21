@@ -46,12 +46,16 @@
         default:
           console.log("NoOp")
       }
-      // console.log(`You entered a value`, colorForm.elements[0].value)
+      i.value = ""
     })
 
 
-    // reducers
+    // reducers.
 
+    // this code uses a Set object as it's state since it only allows on
+    // instance of a particular value.
+    // ie. an input of the colour red followed by another input of red will
+    // not result in the state having 2 red elements.
     function favouriteColor(state, action) {
       if (!state) {
         return new Set([])
