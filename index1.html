@@ -27,7 +27,7 @@
 
   // Some pointers:
     // - an action is an object that must have a "type" property and some other properties.
-    // - Redux.createStore takes a reducer.
+    // - Redux.createStore takes a reducer. A data transformation function.
 
     const buttons = document.querySelector('#buttons')
     buttons.addEventListener('click', function(e){
@@ -35,13 +35,10 @@
       const i = document.querySelector('#add-color')
       switch (e.target.name) {
         case "add":
-          // store.dispatch(actionObject)
           store.dispatch({type: "ADD", color: String(i.value)})
-          console.log(store.getState())
           break;
         case "remove":
           store.dispatch({type: "REMOVE", color: String(i.value)})
-          console.log(store.getState())
           break;
         default:
           console.log("NoOp")
